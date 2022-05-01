@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+
 #Creater Sam Smedts
 
 from GmailWrapper import GmailWrapper
@@ -11,6 +12,8 @@ import json
 import time
 import timeit
 import pickle
+
+time.sleep(10)
 
 version = '1.0 - Sam Smedts'
 
@@ -28,12 +31,12 @@ PASSWORD = 'jwfj vckp qpeq jema'# App code aangemaakt in Gmail settings
 
 gmailWrapper = GmailWrapper(HOSTNAME, USERNAME, PASSWORD)
 
-#algemeneBestellingCounter = 0
-#papierOp = 648
-#huidigeDiameterRol = 24
-#pickle.dump((algemeneBestellingCounter, huidigeDiameterRol, papierOp), open("save.p","wb"))
+algemeneBestellingCounter = 4
+papierOp = 644
+huidigeDiameterRol = 24
+pickle.dump((algemeneBestellingCounter, huidigeDiameterRol, papierOp), open("newsave.p","wb"))
 
-PickleFileVar = pickle.load( open("save.p","rb")) # read the counter from file
+PickleFileVar = pickle.load( open("newsave.p","rb")) # read the counter from file
 #print(PickleFileVar)
 algemeneBestellingCounter = PickleFileVar[0]
 #print('algemeneBestellingCounter: ')
@@ -477,24 +480,30 @@ def UpdateOverigBestellingen():
     
 def StartMessage():
     global version
-    BestellingenMogelijk = algemeneBestellingCounter / 2
+    
+    #BestellingenMogelijk = algemeneBestellingCounter / 2
     printSterLijn(2)
     printLine('Welkom, printer wordt opgestart.')
     printSterLijn(1)
     printLine('PRINTER INFO')
     printLegeLijnen(1)
+    
     printLine('Software versie:')
     printLine(version)
     printLegeLijnen(1)
+    
     printLine('Print teller:')
     printLine(str(algemeneBestellingCounter))
     printLegeLijnen(1)
-    printLine('Bestelling mogelijk:')
-    printLine(str(BestellingenMogelijk))
-    printLegeLijnen(1)
+    
+    #printLine('Bestelling mogelijk:')
+    #printLine(str(BestellingenMogelijk))
+    #printLegeLijnen(1)
+    
     printLine('Overige prints mogelijk:')
     printLine(str(overigeBestellingMogelijk))
     printLegeLijnen(1)
+    
     printLine('Uitlijning:')
     printCijferLijn(1)
     printLegeLijnen(1)
@@ -529,7 +538,7 @@ while True:
     
     UpdateOverigBestellingen()
     print('variabelen opslagen in pickle file')
-    pickle.dump((algemeneBestellingCounter, huidigeDiameterRol, papierOp), open("save.p","wb"))
+    pickle.dump((algemeneBestellingCounter, huidigeDiameterRol, papierOp), open("newsave.p","wb"))
     
     sleepTime = 20
     for i in range(sleepTime+1):
