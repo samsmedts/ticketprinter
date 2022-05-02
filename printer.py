@@ -109,7 +109,7 @@ def DebugBuffer(aantal):
     global algemeneBestellingCounter
     # Er is iets mis met de buffer
     
-    #algemene counter optellen
+    #algemene counter optellenh
     algemeneBestellingCounter += 1
     
     print("debugbuffer start")
