@@ -15,7 +15,7 @@ import pickle
 
 time.sleep(10)
 
-version = '1.0 - Sam Smedts'
+version = '1.1 - 20522'
 
 ser = serial.Serial(port='/dev/serial0', baudrate=19200)
 
@@ -191,8 +191,10 @@ def printMessagedecoder(messageID):
     klantAchternaam = klantObject["Achternaam"]
     klantStraat = klantObject["Adres"]["Straat"]
     klantHuisnummer = klantObject["Adres"]["Huisnummer"]
+    klantAdresZin = klantStraat + ' ' + klantHuisnummer
     klantZip = klantObject["Adres"]["Zip"]
     klantGemeente = klantObject["Adres"]["Gemeente"]
+    klantGemeenteZin = klantZip + ' ' + klantGemeente
     klantTelefoon = klantObject["Telefoon"]
     klantEmail = klantObject["Email"]
     klantBTW = klantObject["BTW"]
@@ -220,6 +222,8 @@ def printMessagedecoder(messageID):
     #printLine(legeLijn)
     
     printLine(klantLeveringsmethode)
+    printLine(klantAdresZin)
+    printLine(klantGemeenteZin)
     printLine(klantLeveringsdatum)
     printLine(klantUurZin)
     printLine(sterLijn)
