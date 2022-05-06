@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 
 #Creater Sam Smedts
-
 from GmailWrapper import GmailWrapper
 
 import RPi.GPIO as GPIO
@@ -13,9 +12,9 @@ import time
 import timeit
 import pickle
 
-time.sleep(10)
+time.sleep(1)
 
-version = '1.1 - 20522'
+version = '1.2 - 060522'
 
 ser = serial.Serial(port='/dev/serial0', baudrate=19200)
 
@@ -31,9 +30,9 @@ PASSWORD = 'jwfj vckp qpeq jema'# App code aangemaakt in Gmail settings
 
 gmailWrapper = GmailWrapper(HOSTNAME, USERNAME, PASSWORD)
 
-algemeneBestellingCounter = 4
-papierOp = 644
-huidigeDiameterRol = 24
+algemeneBestellingCounter = 30
+papierOp = 400
+huidigeDiameterRol = 30
 pickle.dump((algemeneBestellingCounter, huidigeDiameterRol, papierOp), open("newsave.p","wb"))
 
 PickleFileVar = pickle.load( open("newsave.p","rb")) # read the counter from file
@@ -157,6 +156,7 @@ def printMessagedecoder(messageID):
     
     #Splitsen op SPLIT - opdelen in verschillende blokken eerste blok klant info en dan bestelling blokken 
     messageSplit_1 = messageBody.split('SPLIT')
+    #print(messageSplit_1)
     messageSplit_1.pop(0) # Eerst deel met onnodige info verwijderen
     #print(len(messageSplit_1))
     #print(messageSplit_1[0])  # voorbeeld {"Naam":Jan,"Achternaam":,"Adres":{"Straat":Schotensteenweg,"Huisnummer":219,"Zip":,"Gemeente":},"Telefoon":0485638019,"Email":samsmedts@gmail.com,"BTW":,"Leveringsmethode":Afhalen in de zaak,"Leveringsdatum":28/04/2022,"Uur":11u,"Omschrijving":test jan,"Totaal":0.00}\r\n\r\n\t\t{"ProductAantal":1,"ProductNaam":Jonge kaas,"ProductType":undefined,"BroodType":(meergranen),"ProductPrijs":2.70,"ProductTotaal":2.70,"ProductGeen":-,"ProductExtra":Mayonaise}\r\n\t\t\t\t{"ProductAantal":1,"ProductNaam":Philadelphia,"ProductType":broodje klein,"BroodType":(),"ProductPrijs":2.80,"ProductTotaal":2.80,"ProductGeen":-,"ProductExtra":tomaat}\r\n\t\t\r\n\r\n'
@@ -164,7 +164,7 @@ def printMessagedecoder(messageID):
     #klanten info
     klantInfo = str(messageSplit_1[0])
     klantInfo = klantInfo[:-12]
-    #print(klantInfo) #voorbeeld {"Naam":pat,"Achternaam":,"Adres":{"Straat":Schotensteenweg,"Huisnummer":219,"Zip":,"Gemeente":},"Telefoon":02343499445,"Email":samsmedts@gmail.com,"BTW":,"Leveringsmethode":Afhalen in de zaak,"Leveringsdatum":28/04/2022,"Uur":10u,"Omschrijving":test,"Totaal":0.00}
+    print(klantInfo) #voorbeeld {"Naam":pat,"Achternaam":,"Adres":{"Straat":Schotensteenweg,"Huisnummer":219,"Zip":,"Gemeente":},"Telefoon":02343499445,"Email":samsmedts@gmail.com,"BTW":,"Leveringsmethode":Afhalen in de zaak,"Leveringsdatum":28/04/2022,"Uur":10u,"Omschrijving":test,"Totaal":0.00}
     
     messageSplit_1.pop(0) # Klanten info verwijderen uit de lijst
     #print(messageSplit_1)
@@ -180,7 +180,7 @@ def printMessagedecoder(messageID):
         #print(bestelInfo) # voorbeeld {"ProductAantal":1,"ProductNaam":Jonge kaas,"ProductType":undefined,"BroodType":(wit),"ProductPrijs":2.70,"ProductTotaal":2.70,"ProductGeen":-,"ProductExtra":-}
         bestellingen.append(bestelInfo) # elke bestelling toevoegen aan de lijst bestellingen 
         counter += 1
-    #print(bestellingen)
+    print(bestellingen)
     
     #Json omzetten - klant en info er uit halen 
     klantObject = json.loads(klantInfo)
@@ -226,6 +226,10 @@ def printMessagedecoder(messageID):
     printLine(klantGemeenteZin)
     printLine(klantLeveringsdatum)
     printLine(klantUurZin)
+    if(klantOmschrijving == "1"):
+        print("Er is een melding")
+        OmschrijvingsVlag = "!!! MET BIJHORENDE MELDING !!!"
+        printLine(OmschrijvingsVlag)
     printLine(sterLijn)
     #printLine(legeLijn)
     
